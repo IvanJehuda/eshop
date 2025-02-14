@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
+
 
 import java.util.List;
 
@@ -23,10 +27,15 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String createProductPost(@ModelAttribute Product product, Model model) {
+    public String createProductPost(@Valid @ModelAttribute Product product, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("product", product);
+            return "createProduct"; // Return to form with errors
+        }
         service.create(product);
-        return "redirect:list";
+        return "redirect:/product/list";
     }
+
 
     @GetMapping("/list")
     public String productListPage(Model model) {
@@ -45,10 +54,15 @@ public class ProductController {
     }
 
     @PostMapping("/edit")
-    public String editProductPost(@ModelAttribute Product product) {
+    public String editProductPost(@Valid @ModelAttribute Product product, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("product", product);
+            return "editProduct"; // Return to form with errors
+        }
         service.update(product);
         return "redirect:/product/list";
     }
+
     @GetMapping("/delete/{productId}")
     public String deleteProduct(@PathVariable String productId) {
         service.delete(productId);
