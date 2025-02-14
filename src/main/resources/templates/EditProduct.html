@@ -10,22 +10,20 @@
 <div class="container my-3">
     <h2>Edit Product</h2>
 
-    <form th:action="@{/product/edit}" th:object="${product}" method="post">
-        <!-- Hidden field for productId -->
-        <input type="hidden" th:field="*{productId}">
-
+    <form th:action="@{/product/create}" th:object="${product}" method="post">
         <div class="form-group">
             <label for="productName">Product Name:</label>
-            <input type="text" id="productName" th:field="*{productName}" class="form-control" required>
+            <input type="text" id="productName" th:field="*{productName}" class="form-control">
+            <small class="text-danger" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></small>
         </div>
 
         <div class="form-group">
             <label for="productQuantity">Quantity:</label>
-            <input type="number" id="productQuantity" th:field="*{productQuantity}" class="form-control" required>
+            <input type="number" id="productQuantity" th:field="*{productQuantity}" class="form-control">
+            <small class="text-danger" th:if="${#fields.hasErrors('productQuantity')}" th:errors="*{productQuantity}"></small>
         </div>
 
-        <button type="submit" class="btn btn-success">Update Product</button>
-        <a href="/product/list" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-success">Save</button>
     </form>
 </div>
 
