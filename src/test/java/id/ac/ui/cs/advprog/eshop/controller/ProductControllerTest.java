@@ -49,7 +49,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void testCreateProductPost_ValidProduct() throws Exception {
+    void testCreateProductPostValidProduct() throws Exception {
         when(productService.create(any(Product.class))).thenReturn(new Product());
 
         mockMvc.perform(post("/product/create")
@@ -64,7 +64,7 @@ class ProductControllerTest {
 
 
     @Test
-    void testCreateProductPost_InvalidProduct() {
+    void testCreateProductPostInvalidProduct() {
         Product product = new Product();
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
@@ -88,7 +88,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void testEditProductPage_ProductExists() throws Exception {
+    void testEditProductPageProductExists() throws Exception {
         Product product = new Product();
         when(productService.findById("1")).thenReturn(product);
 
@@ -100,7 +100,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void testEditProductPage_ProductNotExists() throws Exception {
+    void testEditProductPageProductNotExists() throws Exception {
         when(productService.findById("1")).thenReturn(null);
 
         mockMvc.perform(get("/product/edit/1"))
@@ -110,7 +110,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void testEditProductPost_ValidProduct() throws Exception {
+    void testEditProductPostValidProduct() throws Exception {
         when(productService.update(any(Product.class))).thenReturn(new Product());
 
         mockMvc.perform(post("/product/edit")
@@ -126,7 +126,7 @@ class ProductControllerTest {
 
 
     @Test
-    void testEditProductPost_InvalidProduct() {
+    void testEditProductPostInvalidProduct() {
         Product product = new Product();
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
