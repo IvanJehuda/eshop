@@ -23,14 +23,14 @@ public class ProductController {
     public String createProductPage(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
-        return "createProduct";
+        return "CreateProduct";
     }
 
     @PostMapping("/create")
     public String createProductPost(@Valid @ModelAttribute Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("product", product);
-            return "createProduct"; // Return to form with errors
+            return "CreateProduct"; // Return to form with errors
         }
         service.create(product);
         return "redirect:/product/list";
@@ -41,7 +41,7 @@ public class ProductController {
     public String productListPage(Model model) {
         List<Product> allProducts = service.findAll();
         model.addAttribute("products", allProducts);
-        return "productList";
+        return "ProductList";
     }
     @GetMapping("/edit/{productId}")
     public String editProductPage(@PathVariable String productId, Model model) {
@@ -50,14 +50,14 @@ public class ProductController {
             return "redirect:/product/list";
         }
         model.addAttribute("product", product);
-        return "editProduct";
+        return "EditProduct";
     }
 
     @PostMapping("/edit")
     public String editProductPost(@Valid @ModelAttribute Product product, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("product", product);
-            return "editProduct"; // Return to form with errors
+            return "EditProduct"; // Return to form with errors
         }
         service.update(product);
         return "redirect:/product/list";
