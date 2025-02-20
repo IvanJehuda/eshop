@@ -45,7 +45,7 @@ class ProductControllerTest {
     void testCreateProductPage() throws Exception {
         mockMvc.perform(get("/product/create"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("createProduct"));
+                .andExpect(view().name("CreateProduct"));
     }
 
     @Test
@@ -72,7 +72,7 @@ class ProductControllerTest {
 
         String result = productController.createProductPost(product, bindingResult, model);
 
-        assertEquals("createProduct", result);
+        assertEquals("CreateProduct", result);
     }
 
     @Test
@@ -82,7 +82,7 @@ class ProductControllerTest {
 
         mockMvc.perform(get("/product/list"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("productList"));
+                .andExpect(view().name("ProductList"));
 
         verify(productService, times(1)).findAll();
     }
@@ -94,7 +94,7 @@ class ProductControllerTest {
 
         mockMvc.perform(get("/product/edit/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("editProduct"));
+                .andExpect(view().name("EditProduct"));
 
         verify(productService, times(1)).findById("1");
     }
@@ -134,7 +134,7 @@ class ProductControllerTest {
 
         String result = productController.editProductPost(product, bindingResult, model);
 
-        assertEquals("editProduct", result);
+        assertEquals("EditProduct", result);
     }
 
     @Test
