@@ -20,6 +20,6 @@ class HomeControllerTest {
 
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())  // Ensures HTTP 200 response
-                .andExpect(view().name("home"));  // Ensures "home" is returned
+                .andExpect(view().name("Home"));  // Ensures "home" is returned
     }
 }
