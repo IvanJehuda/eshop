@@ -144,7 +144,7 @@ class ProductRepositoryTest {
         assertFalse(productIterator.hasNext());
     }
     @Test
-    void testFindById_ExistingProduct() {
+    void testFindByIdExistingProduct() {
         // Create a product
         Product product = new Product();
         product.setProductId("12345");
@@ -163,7 +163,7 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void testFindById_NonExistentProduct() {
+    void testFindByIdNonExistentProduct() {
         // Try to find a product that doesn't exist
         Product foundProduct = productRepository.findById("99999");
 
