@@ -22,6 +22,7 @@ class ProductRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        //Setting Up the test
     }
 
     @Test
@@ -142,6 +143,66 @@ class ProductRepositoryTest {
         Iterator<Product> productIterator = productRepository.findAll();
         assertFalse(productIterator.hasNext());
     }
+    @Test
+    void testFindByIdExistingProduct() {
+        // Create a product
+        Product product = new Product();
+        product.setProductId("12345");
+        product.setProductName("Laptop Gaming");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        // Retrieve product by ID
+        Product foundProduct = productRepository.findById("12345");
+
+        // Validate product exists
+        assertNotNull(foundProduct);
+        assertEquals("12345", foundProduct.getProductId());
+        assertEquals("Laptop Gaming", foundProduct.getProductName());
+        assertEquals(10, foundProduct.getProductQuantity());
+    }
+
+    @Test
+    void testFindByIdNonExistentProduct() {
+        // Try to find a product that doesn't exist
+        Product foundProduct = productRepository.findById("99999");
+
+        // Ensure the product is not found
+        assertNull(foundProduct);
+    }
+    @Test
+    void testUpdateOnEmptyRepository() {
+        Product product = new Product();
+        product.setProductId("not-existing");
+        product.setProductName("Non-existent product");
+        product.setProductQuantity(10);
+
+        Product result = productRepository.update(product);
+
+        assertNull(result);
+    }
+    @Test
+    void testUpdateWithNoMatchingId() {
+        // Add a product
+        Product product = new Product();
+        product.setProductId("12345");
+        product.setProductName("Test Product");
+        product.setProductQuantity(10);
+        productRepository.create(product);
+
+        // Attempt to update with a different product ID
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("99999"); // Different ID
+        updatedProduct.setProductName("New Name");
+        updatedProduct.setProductQuantity(20);
+
+        Product result = productRepository.update(updatedProduct);
+
+        assertNull(result); // Ensure no update happens
+    }
+
+
+
 }
 
 
