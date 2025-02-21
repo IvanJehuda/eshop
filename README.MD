@@ -3,6 +3,7 @@ Ivan Jehuda Angi - 2306152222 - Adpro A
 ## Contents
 1.  [Reflection 1](#reflection-1)
 2. [Reflection 2](#reflection-2)
+3. [Module 2 Reflection](#Module-2-Reflection)
 
 ## Reflection-1
 ### What I  learned?
@@ -101,4 +102,92 @@ To improve the cleanliness and maintainability of the new test suite, we can app
   ```
 - Then, both `CreateProductFunctionalTest.java` and the new test suite can extend this class instead of repeating setup logic.
 
+Here's a more polished and properly formatted version of your Markdown file:
 
+---
+
+# **Module 2 - Reflection**
+## **Code Coverage**
+- ![image](CodeCoverage.png)
+## **Deployment Link**
+- https://loud-miran-ivanjehuda-b507d972.koyeb.app/ 
+
+
+## **Code Quality Issues I Have Fixed**
+
+### **1. JUnit 5 Test Method Naming Convention**
+**Issue:** The test method name `'testFindById_NonExistentProduct'` does not match the required naming pattern `[a-z][a-zA-Z0-9]*`.
+
+**Fix:** Changed the test method name to follow **camelCase** convention.
+
+#### **Before:**
+```java
+@Test
+void test_FindById() {
+    when(productRepository.findById("123")).thenReturn(sampleProduct);
+
+    Product foundProduct = productService.findById("123");
+
+    assertNotNull(foundProduct);
+    assertEquals(sampleProduct.getProductId(), foundProduct.getProductId());
+    verify(productRepository, times(1)).findById("123");
+}
+```  
+
+#### **After:**
+```java
+@Test
+void testFindById() {
+    when(productRepository.findById("123")).thenReturn(sampleProduct);
+
+    Product foundProduct = productService.findById("123");
+
+    assertNotNull(foundProduct);
+    assertEquals(sampleProduct.getProductId(), foundProduct.getProductId());
+    verify(productRepository, times(1)).findById("123");
+}
+```  
+
+
+
+### **2. Empty Method Body**
+**Issue:** The method `contextLoads()` has an empty body, which may cause confusion.
+
+**Fix:** Added an assertion to clarify the intent of the test.
+
+#### **Before:**
+```java
+@Test
+void contextLoads() {
+}
+```  
+
+#### **After:**
+```java
+@Test
+void contextLoads() {
+    assertThat(true).isTrue();
+}
+```  
+
+
+
+### **3. Unused Static Import**
+**Issue:** The test file includes a static import for all assertions, which is unnecessary.
+
+**Fix:** Scoped the import to only include **specific assertions**.
+
+#### **Before:**
+```java
+import static org.junit.jupiter.api.Assertions.*;
+```  
+
+#### **After:**
+```java
+import static org.junit.jupiter.api.Assertions.assertEquals;
+```  
+
+## Has the current implementation  met the definition of Continuous Integration and Continuous Deployment?
+I believe my current project aligns with the principles of CI/CD. 
+- By utilizing GitHub Actions to execute workflows defined in the `.github/workflows` directory, I have successfully implemented Continuous Integration (CI), as it automatically triggers the workflows whenever a push or pull request is made to a branch. 
+- Additionally, for Continuous Deployment (CD), I have integrated Koyeb as my deployment platform, ensuring that my project is automatically deployed whenever changes are pushed or a pull request is submitted.
