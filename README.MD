@@ -4,6 +4,7 @@ Ivan Jehuda Angi - 2306152222 - Adpro A
 1.  [Reflection 1](#reflection-1)
 2. [Reflection 2](#reflection-2)
 3. [Module 2 Reflection](#Module-2-Reflection)
+4. [Module 3 Reflection](#Module-3-Reflection)
 
 ## Reflection-1
 ### What I  learned?
@@ -106,7 +107,7 @@ Here's a more polished and properly formatted version of your Markdown file:
 
 ---
 
-# **Module 2 - Reflection**
+# **Module-2-Reflection**
 ## **Code Coverage**
 - ![image](CodeCoverage.png)
 ## **Deployment Link**
@@ -191,3 +192,60 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 I believe my current project aligns with the principles of CI/CD. 
 - By utilizing GitHub Actions to execute workflows defined in the `.github/workflows` directory, I have successfully implemented Continuous Integration (CI), as it automatically triggers the workflows whenever a push or pull request is made to a branch. 
 - Additionally, for Continuous Deployment (CD), I have integrated Koyeb as my deployment platform, ensuring that my project is automatically deployed whenever changes are pushed or a pull request is submitted.
+
+
+
+# **Module-3-Reflection**
+
+## Principles Applied in the Project
+
+In my project, I applied all **SOLID** principles through various refactorings:
+
+### **1. Single Responsibility Principle (SRP)**
+- **Separation of Concerns**:
+  - `CarController` was moved into its own file instead of being inside `ProductController`.
+  - `CarService` was split into **`CarReadService`** (for read operations) and **`CarWriteService`** (for write operations).
+  - `CarRepository` was **abstracted into an interface**, ensuring that data access logic is separated from business logic.
+
+### **2. Open/Closed Principle (OCP)**
+- The `CarRepository` interface allows adding **new storage implementations (e.g., JPA, MongoDB) without modifying existing code**.
+- `CarReadService` and `CarWriteService` can be **extended** (e.g., filtering cars by category) without modifying their current implementations.
+
+### **3. Liskov Substitution Principle (LSP)**
+- `CarRepositoryImpl` implements `CarRepository`, meaning it can be replaced by another implementation (e.g., `CarDatabaseRepository`) **without breaking existing functionality**.
+- `CarReadServiceImpl` and `CarWriteServiceImpl` can be substituted wherever `CarReadService` and `CarWriteService` are expected.
+
+### **4. Interface Segregation Principle (ISP)**
+- Instead of having a single large `CarService` interface, I divided it into **two separate interfaces**:
+  - `CarReadService` (for retrieving data)
+  - `CarWriteService` (for modifying data)
+- `CarRepository` was introduced as an interface, allowing different repository implementations.
+
+### **5. Dependency Inversion Principle (DIP)**
+- **The service layer now depends on abstractions (`CarRepository`) instead of concrete classes (`CarRepositoryImpl`)**.
+- This makes the system **loosely coupled**, meaning we can switch to a database-backed repository without modifying the service logic.
+
+
+## **Advantages of Applying SOLID Principles**
+
+### **1. Easier Maintenance and Scalability**
+- Example: If we want to **switch from an in-memory repository to a database**, we can just create a new `CarDatabaseRepository` implementing `CarRepository` **without modifying the service layer**.
+
+### **2. Improved Code Organization and Readability**
+- Example: The controller now **only handles HTTP requests**, and business logic is handled in services, making it easier to understand.
+
+### **3. Simplified Testing**
+- Example: We can easily mock `CarRepository` in unit tests, **allowing us to test the service layer independently**.
+
+
+## **Disadvantages of Not Applying SOLID Principles**
+
+### **1. Increased Maintenance Complexity**
+- Without **SRP**, `CarService` would have mixed read and write logic, making changes **more error-prone**.
+
+### **2. Difficulty in Extending the System**
+- Without **OCP**, if we introduce a **new data source** (e.g., a database), we would have to **modify the existing repository instead of simply adding a new implementation**.
+
+### **3. Higher Coupling and Risk of Bugs**
+- Without **DIP**, if the controller directly depended on `CarRepositoryImpl`, changing the repository would **require modifying multiple parts of the application**.
+
