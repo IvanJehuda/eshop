@@ -5,6 +5,8 @@ Ivan Jehuda Angi - 2306152222 - Adpro A
 2. [Reflection 2](#reflection-2)
 3. [Module 2 Reflection](#Module-2-Reflection)
 4. [Module 3 Reflection](#Module-3-Reflection)
+5. [Module 4 Reflection](#Module-4-Reflection)
+
 
 ## Reflection-1
 ### What I  learned?
@@ -248,4 +250,20 @@ In my project, I applied all **SOLID** principles through various refactorings:
 
 ### **3. Higher Coupling and Risk of Bugs**
 - Without **DIP**, if the controller directly depended on `CarRepositoryImpl`, changing the repository would **require modifying multiple parts of the application**.
+# **Module-4-Reflection**
 
+## **Reflection on TDD Workflow**
+At first, the Test-Driven Development (TDD) workflow felt weird and difficult because I was used to writing code first and testing later. Writing tests before implementation required a shift in mindset, and it took time to adjust. However, now i realised that, The Test-Driven Development (TDD) workflow was useful in guiding the development process by ensuring that each feature had a corresponding test before implementation. This helped catch errors early and kept the code more structured. However, I found that sometimes writing tests first felt restrictive, especially when I was unsure about the exact implementation details. Next time, I will spend more time designing better test cases before coding and ensure that my tests cover edge cases more effectively.
+
+
+## **Reflection on F.I.R.S.T. Principles**
+The unit tests I created followed the **F.I.R.S.T.** principles well, but there are still areas for improvement. Here’s how my tests align with each principle:
+
+- **Fast**: My tests run quickly, ensuring rapid feedback during development. This principle is well-implemented since im using Mockito.
+- **Isolated**: Each test was independent, as fresh instances of `Order` and `OrderRepository` were created in the `setUp()` method. No test relied on the state left behind by others, except for all the statuses of `Order`, meaning this principle was successfully followed.
+- **Repeatable**: The tests produced consistent results when run multiple times, ensuring repeatability. This aspect was implemented correctly.
+- **Self-validating**: Each test had clear assertions that resulted in a definite pass or fail outcome, removing the need for manual verification.
+- **Thorough/Timely**: I managed to write all the tests before implementing the functionality, following the TDD approach correctly. Additionally, the tests covered multiple scenarios (both success and unsuccessful conditions). However, I could improve by adding more edge cases to ensure the system behaves correctly in unexpected situations.
+  .
+
+Overall, my tests followed the **F.I.R.S.T.** principles well, but I will continue refining them by ensuring complete independence of test cases, especially regarding shared statuses in `Order`, and edge cases.
