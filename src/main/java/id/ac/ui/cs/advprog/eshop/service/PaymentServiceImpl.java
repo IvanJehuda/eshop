@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
@@ -16,34 +17,34 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
-        String status = "REJECTED";
+        PaymentStatus status = PaymentStatus.REJECTED;
 
         if ("Voucher Code".equals(method)) {
             String voucherCode = paymentData.get("voucherCode");
             if (isValidVoucherCode(voucherCode)) {
-                status = "SUCCESS";
+                status = PaymentStatus.SUCCESS;
             }
         } else if ("Bank Transfer".equals(method)) {
             if (paymentData.containsKey("bankName") && paymentData.containsKey("referenceCode") &&
                     !paymentData.get("bankName").isEmpty() && !paymentData.get("referenceCode").isEmpty()) {
-                status = "PENDING";
+                status = PaymentStatus.PENDING;
             }
         } else if ("Cash on Delivery".equals(method)) {
             if (paymentData.containsKey("address") && paymentData.containsKey("deliveryFee") &&
                     !paymentData.get("address").isEmpty() && !paymentData.get("deliveryFee").isEmpty()) {
-                status = "PENDING";
+                status = PaymentStatus.PENDING;
             }
         }
 
-        Payment payment = new Payment(order.getId(), method, status, paymentData);
+        Payment payment = new Payment(order.getId(), method, status.name(), paymentData);
         return paymentRepository.save(payment);
     }
 
-    @Override
-    public Payment setStatus(Payment payment, String status) {
-        payment.setStatus(status);
+    public Payment setStatus(Payment payment, PaymentStatus status) {
+        payment.setStatus(status); // Ensure Payment class supports PaymentStatus
         return paymentRepository.save(payment);
     }
+
 
     @Override
     public Payment getPayment(String paymentId) {
