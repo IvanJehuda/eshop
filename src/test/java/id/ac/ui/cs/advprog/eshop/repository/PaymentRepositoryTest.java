@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,10 +25,10 @@ class PaymentRepositoryTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
 
-        Payment payment1 = new Payment("12345", "Voucher Code", "PENDING", paymentData);
+        Payment payment1 = new Payment("12345", "Voucher Code", PaymentStatus.PENDING, paymentData);
         payments.add(payment1);
 
-        Payment payment2 = new Payment("67890", "Bank Transfer", "PENDING", paymentData);
+        Payment payment2 = new Payment("67890", "Bank Transfer", PaymentStatus.PENDING, paymentData);
         payments.add(payment2);
     }
 
@@ -48,12 +49,12 @@ class PaymentRepositoryTest {
         Payment payment = payments.get(0);
         paymentRepository.save(payment);
 
-        Payment newPayment = new Payment(payment.getId(), payment.getMethod(), "SUCCESS", payment.getPaymentData());
+        Payment newPayment = new Payment(payment.getId(), payment.getMethod(), PaymentStatus.SUCCESS, payment.getPaymentData());
         Payment result = paymentRepository.save(newPayment);
 
         Payment findResult = paymentRepository.findById(payment.getId());
         assertEquals(newPayment.getId(), result.getId());
-        assertEquals("SUCCESS", payment.getStatus().name());
+        assertEquals(PaymentStatus.SUCCESS, findResult.getStatus());
     }
 
     @Test
