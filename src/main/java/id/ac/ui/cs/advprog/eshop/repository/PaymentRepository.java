@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
 import id.ac.ui.cs.advprog.eshop.model.Payment;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 
 import java.util.*;
 
@@ -21,12 +22,12 @@ public class PaymentRepository {
     }
 
     public Payment addPayment(String id, String method, Map<String, String> paymentData) {
-        Payment payment = new Payment(id, method, "WAITING_PAYMENT", paymentData);
+        Payment payment = new Payment(id, method, PaymentStatus.PENDING, paymentData);
         paymentStorage.put(id, payment);
         return payment;
     }
 
-    public Payment setStatus(String paymentId, String status) {
+    public Payment setStatus(String paymentId, PaymentStatus status) {
         Payment payment = paymentStorage.get(paymentId);
         if (payment != null) {
             payment.setStatus(status);
