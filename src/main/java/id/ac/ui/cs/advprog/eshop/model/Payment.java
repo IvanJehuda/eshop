@@ -13,7 +13,7 @@ public class Payment {
     private PaymentStatus status;
     private Map<String, String> paymentData;
 
-    public Payment(String id, String method, PaymentStatus status, Map<String, String> paymentData) {
+    public Payment(String id, String method, Object status, Map<String, String> paymentData) {
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("Payment ID cannot be null or empty");
         }
@@ -29,7 +29,20 @@ public class Payment {
 
         this.id = id;
         this.method = method;
-        this.status = status;
+
+        // Allow both String and Enum for compatibility
+        if (status instanceof String) {
+            try {
+                this.status = PaymentStatus.valueOf((String) status);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid payment status string: " + status);
+            }
+        } else if (status instanceof PaymentStatus) {
+            this.status = (PaymentStatus) status;
+        } else {
+            throw new IllegalArgumentException("Invalid payment status type");
+        }
+
         this.paymentData = paymentData;
 
         if (method.equals("Bank Transfer")) {
@@ -38,6 +51,7 @@ public class Payment {
             validateVoucherCode(this.paymentData);
         }
     }
+
 
     private void validateBankTransfer(Map<String, String> paymentData) {
         String bankName = paymentData.get("bankName");
@@ -70,4 +84,11 @@ public class Payment {
         }
         this.status = status;
     }
+    public void setStatus(String status) { // Accept String input
+        if (status == null || status.isEmpty()) {
+            throw new IllegalArgumentException("Invalid payment status");
+        }
+        this.status = PaymentStatus.valueOf(status); // Convert String to Enum
+    }
+
 }

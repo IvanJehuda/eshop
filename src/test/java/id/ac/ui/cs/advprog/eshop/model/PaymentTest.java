@@ -36,7 +36,7 @@ public class PaymentTest {
 
     @Test
     void testSetStatusInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> payment.setStatus(null));
+        assertThrows(IllegalArgumentException.class, () -> payment.setStatus((PaymentStatus) null));
     }
 
     @Test
