@@ -1,28 +1,36 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
 import id.ac.ui.cs.advprog.eshop.model.Payment;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 public class PaymentRepository {
+    private final Map<String, Payment> paymentStorage = new HashMap<>();
 
     public Payment save(Payment payment) {
-        return null;
+        paymentStorage.put(payment.getId(), payment);
+        return payment;
     }
 
     public Payment findById(String paymentId) {
-        return null;
+        return paymentStorage.get(paymentId);
     }
 
     public List<Payment> findAll() {
-        return null;
+        return new ArrayList<>(paymentStorage.values());
     }
 
-    public Payment addPayment(String orderId, String method, Map<String, String> paymentData) {
-        return null;
+    public Payment addPayment(String id, String method, Map<String, String> paymentData) {
+        Payment payment = new Payment(id, method, "WAITING_PAYMENT", paymentData);
+        paymentStorage.put(id, payment);
+        return payment;
     }
 
     public Payment setStatus(String paymentId, String status) {
-        return null;
+        Payment payment = paymentStorage.get(paymentId);
+        if (payment != null) {
+            payment.setStatus(status);
+        }
+        return payment;
     }
 }
