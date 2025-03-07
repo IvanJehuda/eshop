@@ -1,22 +1,27 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Payment {
     private String id;
     private String method;
-    private String status;
+    private PaymentStatus status;
     private Map<String, String> paymentData;
 
-    public Payment(String id, String method, String status, Map<String, String> paymentData) {
+    public Payment(String id, String method, PaymentStatus status, Map<String, String> paymentData) {
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("Payment ID cannot be null or empty");
         }
         if (method == null || method.isEmpty()) {
             throw new IllegalArgumentException("Payment method cannot be null or empty");
         }
-        if (status == null || status.isEmpty()) {
-            throw new IllegalArgumentException("Payment status cannot be null or empty");
+        if (status == null) {
+            throw new IllegalArgumentException("Payment status cannot be null");
         }
         if (paymentData == null || paymentData.isEmpty()) {
             throw new IllegalArgumentException("Payment data cannot be null or empty");
@@ -39,46 +44,30 @@ public class Payment {
         String referenceCode = paymentData.get("referenceCode");
 
         if (bankName == null || bankName.isEmpty() || referenceCode == null || referenceCode.isEmpty()) {
-            this.status = "REJECTED";
+            this.status = PaymentStatus.REJECTED;
         }
     }
 
     private void validateVoucherCode(Map<String, String> paymentData) {
         String voucherCode = paymentData.get("voucherCode");
         if (voucherCode == null || voucherCode.isEmpty()) {
-            this.status = "REJECTED";
+            this.status = PaymentStatus.REJECTED;
             return;
         }
 
         if (voucherCode.length() == 16 &&
                 voucherCode.startsWith("ESHOP") &&
                 voucherCode.replaceAll("\\D", "").length() == 8) {
-            this.status = "SUCCESS";
+            this.status = PaymentStatus.SUCCESS;
         } else {
-            this.status = "REJECTED";
+            this.status = PaymentStatus.REJECTED;
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        if (!status.equals("SUCCESS") && !status.equals("REJECTED") && !status.equals("PENDING")) {
+    public void setStatus(PaymentStatus status) {
+        if (status == null) {
             throw new IllegalArgumentException("Invalid payment status");
         }
         this.status = status;
-    }
-
-    public Map<String, String> getPaymentData() {
-        return paymentData;
     }
 }
