@@ -41,12 +41,15 @@ public class PaymentTest {
     @Test
     void testCreatePaymentWithEmptyBankName() {
         paymentData.put("bankName", "");
-        assertThrows(IllegalArgumentException.class, () -> new Payment("2", "Bank Transfer", "PENDING", paymentData));
+        Payment invalidPayment = new Payment("2", "Bank Transfer", "PENDING", paymentData);
+        assertEquals("REJECTED", invalidPayment.getStatus());
     }
 
     @Test
     void testCreatePaymentWithNullReferenceCode() {
         paymentData.put("referenceCode", null);
-        assertThrows(IllegalArgumentException.class, () -> new Payment("3", "Bank Transfer", "PENDING", paymentData));
+        Payment invalidPayment = new Payment("3", "Bank Transfer", "PENDING", paymentData);
+        assertEquals("REJECTED", invalidPayment.getStatus());
     }
+
 }
