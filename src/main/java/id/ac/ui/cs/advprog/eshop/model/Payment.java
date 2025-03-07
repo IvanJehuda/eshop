@@ -1,9 +1,10 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
-import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Map;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ public class Payment {
     private PaymentStatus status;
     private Map<String, String> paymentData;
 
-    public Payment(String id, String method, Object status, Map<String, String> paymentData) {
+    public Payment(String id, String method, PaymentStatus status, Map<String, String> paymentData) {
         if (id == null || id.isEmpty()) {
             throw new IllegalArgumentException("Payment ID cannot be null or empty");
         }
@@ -29,31 +30,17 @@ public class Payment {
 
         this.id = id;
         this.method = method;
-
-        // Allow both String and Enum for compatibility
-        if (status instanceof String) {
-            try {
-                this.status = PaymentStatus.valueOf((String) status);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid payment status string: " + status);
-            }
-        } else if (status instanceof PaymentStatus) {
-            this.status = (PaymentStatus) status;
-        } else {
-            throw new IllegalArgumentException("Invalid payment status type");
-        }
-
+        this.status = status;
         this.paymentData = paymentData;
 
         if (method.equals("Bank Transfer")) {
-            validateBankTransfer(this.paymentData);
+            validateBankTransfer();
         } else if (method.equals("Voucher Code")) {
-            validateVoucherCode(this.paymentData);
+            validateVoucherCode();
         }
     }
 
-
-    private void validateBankTransfer(Map<String, String> paymentData) {
+    private void validateBankTransfer() {
         String bankName = paymentData.get("bankName");
         String referenceCode = paymentData.get("referenceCode");
 
@@ -62,7 +49,7 @@ public class Payment {
         }
     }
 
-    private void validateVoucherCode(Map<String, String> paymentData) {
+    private void validateVoucherCode() {
         String voucherCode = paymentData.get("voucherCode");
         if (voucherCode == null || voucherCode.isEmpty()) {
             this.status = PaymentStatus.REJECTED;
@@ -84,11 +71,4 @@ public class Payment {
         }
         this.status = status;
     }
-    public void setStatus(String status) { // Accept String input
-        if (status == null || status.isEmpty()) {
-            throw new IllegalArgumentException("Invalid payment status");
-        }
-        this.status = PaymentStatus.valueOf(status); // Convert String to Enum
-    }
-
 }
